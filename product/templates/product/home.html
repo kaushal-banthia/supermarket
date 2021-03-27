@@ -1,0 +1,33 @@
+{% extends 'product/base.html' %}
+
+{% block content %}
+
+<br><br>
+<div class="container">
+
+    <a href="{% url 'product-add' %}">
+        <button class="btn btn-info">
+            Add Product
+        </button>
+    </a>
+
+    <br><br>
+    
+    <a href="{% url 'product-edit' %}">
+        <button class="btn btn-info">
+            Edit Product
+        </button>
+    </a>
+    
+    <br><br>
+
+    <a href="{% url 'product-view' %}">
+        <button class="btn btn-info">
+            View Product
+        </button>
+    </a>
+    
+
+</div>
+
+{% endblock content %}
