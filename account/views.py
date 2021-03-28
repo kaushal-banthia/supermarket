@@ -4,6 +4,7 @@ from .forms import UserRegisterForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -28,4 +29,16 @@ def register(request):
 def profile(request):
     return render(request,'account/profile.html')
 
+@user_passes_test(lambda u: u.is_superuser)
+def edit_user(request):
+    user_list = User.objects.all()
+    context = {'user_list':user_list}
+    return render(request, 'account/edit_user.html', context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def del_user(request,u_id):
+    user = User.objects.get(pk=u_id)
+    user.is_active = False
+    user.save()
+    return redirect('account-user-edit')
 

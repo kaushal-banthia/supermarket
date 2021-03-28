@@ -1,5 +1,13 @@
 {% extends 'account/base.html' %}
 
 {% block content %}
-    <h1>{{user.username}}</h1>
+    <h1>Username: {{user.username}}</h1>
+    <h1>Email: {{user.email}}</h1>
+    {% if user.is_superuser %}
+    <h1>Position: Manager</h1>
+
+    {% else %}
+    <h1>Position: Clerk</h1>
+
+    {% endif %}
 {% endblock content %}  
