@@ -1,6 +1,8 @@
 {% extends 'account/base.html' %}
 
+{% load static %}
 {% block content %}
+    <img src="{% static 'account/manager.png' %}" width=300 align=right>
     <h1>Username: {{user.username}}</h1>
     <h1>Email: {{user.email}}</h1>
     {% if user.is_superuser %}
