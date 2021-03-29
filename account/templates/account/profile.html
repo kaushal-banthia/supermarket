@@ -2,14 +2,20 @@
 
 {% load static %}
 {% block content %}
-    <img src="{% static 'account/manager.png' %}" width=300 align=right>
+<div class='container' style="font-family:Montserrat; font-size: 70px; margin-left: 100px;">
+    
+    {% if user.is_superuser %}
+    <img src="{% static 'account/manager.png' %}" width=350 align=right>
+    {% else %}
+    <img src="{% static 'account/clerk.png' %}" width=600 align=right>
+    {% endif %}
+    <br><br>
     <h1>Username: {{user.username}}</h1>
     <h1>Email: {{user.email}}</h1>
     {% if user.is_superuser %}
     <h1>Position: Manager</h1>
-
     {% else %}
     <h1>Position: Clerk</h1>
-
     {% endif %}
+</div>
 {% endblock content %}  
