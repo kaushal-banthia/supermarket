@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account.apps.AccountConfig',
     'crispy_forms',
+    'account.apps.AccountConfig',
     'product.apps.ProductConfig',
 ]
 
@@ -127,3 +127,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'account-profile'
 
 LOGIN_URL = 'account-login'
+
+SESSION_SAVE_EVERY_REQUEST = True

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import User
 
 class Product(models.Model):
     name = models.CharField(max_length = 100)
@@ -9,3 +10,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Transaction(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    data = models.JSONField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    amount = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.id)

@@ -1,7 +1,7 @@
 from django import forms
-from .models import Product
+from .models import Product, Transaction
 from django.forms import ValidationError
-
+from django.core.validators import MinValueValidator
 
 class ProductForm(forms.ModelForm):
 
@@ -15,3 +15,11 @@ class EditProductForm(forms.ModelForm):
         model = Product
         fields = ['quantity', 'cost_price' ,'selling_price']
 
+class TransactionForm(forms.ModelForm):
+    product_id = forms.IntegerField(required = False)
+    Product_name = forms.CharField(max_length=100,required=False)
+    quantity = forms.IntegerField(validators=[MinValueValidator(1)])
+
+    class Meta:
+        model = Transaction
+        fields = ['Product_name','quantity','product_id']

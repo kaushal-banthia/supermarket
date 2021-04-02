@@ -27,7 +27,12 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request,'account/profile.html')
+    user = request.user
+    transactions = user.transaction_set.all().order_by('-created_at')
+    
+    
+    context = {'transactions':transactions}
+    return render(request,'account/profile.html', context)
 
 @user_passes_test(lambda u: u.is_superuser)
 def edit_user(request):
