@@ -10,6 +10,11 @@ from .checks import *
 from django.http import HttpResponse
 from .utils import render_to_pdf
 import datetime
+from django.http import JsonResponse
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
 
 
 
@@ -209,6 +214,8 @@ def new_transaction(request):
 def generate_pdf(request):
 
     transaction_dict = request.session['my_dict']
+    sp = {}
+    cp = {}
 
     total_amount = 0
 
@@ -220,8 +227,10 @@ def generate_pdf(request):
         p.save()
         total_amount += p.selling_price*val
         product_list.append(p)
+        sp[key] = p.selling_price
+        cp[key] = p.cost_price
 
-    t = Transaction.objects.create(user=request.user, data=transaction_dict, amount = total_amount)
+    t = Transaction.objects.create(user=request.user, data=transaction_dict ,amount = total_amount, sp=sp, cp=cp)
     
     del request.session['my_dict']
 
@@ -244,3 +253,100 @@ def complete_transaction(request):
 def clear(request):
     del request.session['my_dict']
     return redirect('product-transaction')
+
+@user_passes_test(lambda u: u.is_superuser)
+def user_report(request, u_id):
+    user = User.objects.get(pk=u_id)
+    transactions = user.transaction_set.all().order_by('-created_at')
+    context = {'transactions':transactions, 'username':user.username, 'u_id':user.id}
+    return render(request,'product/user_transaction.html', context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def report(request):
+
+    if request.method == "POST":
+        start = request.POST['start_date']
+        end = request.POST['end_date']
+
+        request.session['start'] = start
+        request.session['end'] = end        
+        
+        return redirect('product-chart-home')
+
+    num = Transaction.objects.all().count()
+    user_list = User.objects.all()
+    context = {
+        'num':num,
+        'user_list': user_list,
+    }
+    return render(request,'product/report.html',context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def chart_home(request):
+    return render(request, 'product/chart.html')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def create_chart(request):
+    start = request.session['start']
+    end = request.session['end']
+
+    del request.session['start']
+    del request.session['end']
+
+
+    start_obj = datetime.date(int(start[0:4]),int(start[5:7]),int(start[8:]))
+    end_obj = datetime.date(int(end[0:4]),int(end[5:7]),int(end[8:])+1)
+
+    object_list = []
+    quantity_list = []
+    profit_list = []
+    revenue_list = []
+
+    transaction_list = Transaction.objects.all().filter(created_at__gte=start_obj).filter(created_at__lte=end_obj)
+
+    for transaction in transaction_list:
+        for key,val in transaction.data.items():
+            if key not in object_list:
+                object_list.append(key)
+                quantity_list.append(val)
+                profit_list.append((transaction.sp[key]-transaction.cp[key])*val)
+                revenue_list.append(transaction.sp[key]*val)
+            
+            else:
+                ind = object_list.index(key)
+                quantity_list[ind]+=val
+                profit_list[ind] += (transaction.sp[key]-transaction.cp[key])*val
+                revenue_list[ind] += transaction.sp[key]*val
+                
+    data = {
+        'object_list':object_list,
+        'quantity_list':quantity_list,
+        'profit_list':profit_list,
+        'revenue_list':revenue_list,
+    }
+
+    return JsonResponse(data)
+
+# class ChartData(APIView):
+#     authentication_classes = []
+#     permission_classes = []
+   
+#     def get(self, request, format = None):
+#         labels = [
+#             'January',
+#             'February', 
+#             'March', 
+#             'April', 
+#             'May', 
+#             'June', 
+#             'July'
+#             ]
+#         chartLabel = "my data"
+#         chartdata = [0, 10, 5, 2, 20, 30, 45]
+#         data ={
+#                      "labels":labels,
+#                      "chartLabel":chartLabel,
+#                      "chartdata":chartdata,
+#              }
+#         return Response(data)

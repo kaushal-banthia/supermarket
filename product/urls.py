@@ -11,5 +11,10 @@ urlpatterns = [
     path('pay/', views.generate_pdf, name='product-pay'),
     path('clear/', views.clear, name='product-clear'),
     path('complete/', views.complete_transaction, name='product-complete'),
+    path('report/',views.report, name='product-report'),
+    path('report/user/<int:u_id>', views.user_report, name='product-user-report'),
+
+    path('chart/', views.chart_home, name='product-chart-home'),
+    path('chart/api/', views.create_chart),
 ]
 

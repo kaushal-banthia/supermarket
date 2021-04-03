@@ -16,6 +16,8 @@ class Transaction(models.Model):
     data = models.JSONField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.PositiveIntegerField(default=0)
+    sp = models.JSONField(null=True)
+    cp = models.JSONField(null=True)
 
     def __str__(self):
         return str(self.id)

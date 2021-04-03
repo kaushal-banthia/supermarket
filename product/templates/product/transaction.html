@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load static %}
+
 {% load hash %}
 
 {% load upper %}
@@ -64,6 +66,7 @@
             {% with product_list|hash:forloop.counter as product %}
             <div class="col-1 px-0"> {{product.selling_price}} </div>
             {% endwith %}
+        </div>
     </div>
 {% endfor %}
 
@@ -86,5 +89,6 @@
     </form>
     
 </div>
+
 
 {% endblock content %}
