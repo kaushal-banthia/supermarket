@@ -3,7 +3,7 @@
 {% load hash %}
 
 {% block content %}
-    
+
     <h1> Total Transactions: {{num}} </h1> 
 
     <hr>
@@ -22,11 +22,17 @@
         </ul>
     </div>
 
-    
+    <hr>
+
+        {% if my_error_message %}
+            <div class="alert alert-danger">
+                <strong>{{ my_error_message|escape }}</strong>
+            </div>
+        {% endif %}
 
     <br> <br>
     <h2 style="color: rgb(26, 167, 238);">Enter start and end dates to get plot: </h2>
-    <form method="POST" target="_blank">
+    <form method="POST">
         {% csrf_token %}
         <strong>
             <label for="start">Enter the start date: </label>

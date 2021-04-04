@@ -264,17 +264,43 @@ def user_report(request, u_id):
 @user_passes_test(lambda u: u.is_superuser)
 def report(request):
 
+    num = Transaction.objects.all().count()
+    user_list = User.objects.all()
+
     if request.method == "POST":
         start = request.POST['start_date']
         end = request.POST['end_date']
+
+        if date_correct(start, end) == 1:
+            start_obj = datetime.date(int(start[0:4]),int(start[5:7]),int(start[8:]))
+            end_obj = datetime.date(int(end[0:4]),int(end[5:7]),int(end[8:])+1)
+
+            if (start_obj >= end_obj):
+                context = {
+                    'num':num,
+                    'user_list': user_list,
+                    'my_error_message': 'Start Date cannot occur before the End Date'}
+                return render(request,'product/report.html',context)
+
+        elif date_correct(start, end) == 2:
+            end_obj = datetime.date.today()
+            year = end_obj.strftime("%Y")
+            month = end_obj.strftime("%m")
+            day = end_obj.strftime("%d")
+            end = year+'-'+month+'-'+day
+
+        else:
+            context = {
+                'num':num,
+                'user_list': user_list,
+                'my_error_message': 'Please enter the appropriate Start Date'}
+            return render(request,'product/report.html',context)
 
         request.session['start'] = start
         request.session['end'] = end        
         
         return redirect('product-chart-home')
 
-    num = Transaction.objects.all().count()
-    user_list = User.objects.all()
     context = {
         'num':num,
         'user_list': user_list,
@@ -293,7 +319,6 @@ def create_chart(request):
 
     del request.session['start']
     del request.session['end']
-
 
     start_obj = datetime.date(int(start[0:4]),int(start[5:7]),int(start[8:]))
     end_obj = datetime.date(int(end[0:4]),int(end[5:7]),int(end[8:])+1)
@@ -327,26 +352,3 @@ def create_chart(request):
     }
 
     return JsonResponse(data)
-
-# class ChartData(APIView):
-#     authentication_classes = []
-#     permission_classes = []
-   
-#     def get(self, request, format = None):
-#         labels = [
-#             'January',
-#             'February', 
-#             'March', 
-#             'April', 
-#             'May', 
-#             'June', 
-#             'July'
-#             ]
-#         chartLabel = "my data"
-#         chartdata = [0, 10, 5, 2, 20, 30, 45]
-#         data ={
-#                      "labels":labels,
-#                      "chartLabel":chartLabel,
-#                      "chartdata":chartdata,
-#              }
-#         return Response(data)
