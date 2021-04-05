@@ -3,9 +3,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from .forms import (
-    UserRegisterForm, UserCreationForm,
-)
+from .forms import UserRegisterForm, UserCreationForm
 
 
 class UserListViewTest(TestCase):
