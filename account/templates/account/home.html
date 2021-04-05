@@ -11,6 +11,7 @@
   <b>Super Market Automation Software</b>
   
   <br>
+  {% if not user.is_authenticated %}
   <center>
     <form style="display: inline;" action = "{% url 'account-login'%}">
       <button type="submit" class="btn-lg btn-primary">Login</button>
@@ -20,6 +21,7 @@
       <button type="submit" class="btn-lg btn-primary">Register</button>
     </form>
   </center>
+  {% endif %}
 </p>
 
 {% endblock %}
