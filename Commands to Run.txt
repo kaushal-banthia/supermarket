@@ -3,4 +3,6 @@ py manage.py makemigrations
 py manage.py migrate
 py manage.py runserver
 
+# for testing
 py manage.py test
+python manage.py test -v 3 --testrunner parth.HtmlTestReporter
