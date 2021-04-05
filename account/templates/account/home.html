@@ -10,9 +10,16 @@
 <p style = "font-family:Montserrat; font-size: 70px; margin-left: 100px;">
   <b>Super Market Automation Software</b>
   
-  <!-- <form method="post" action="login.html" align="center">
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form> -->
+  <br>
+  <center>
+    <form style="display: inline;" action = "{% url 'account-login'%}">
+      <button type="submit" class="btn-lg btn-primary">Login</button>
+    </form>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <form style="display:inline;" action = "{% url 'account-register'%}">
+      <button type="submit" class="btn-lg btn-primary">Register</button>
+    </form>
+  </center>
 </p>
 
 {% endblock %}
