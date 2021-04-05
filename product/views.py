@@ -28,6 +28,19 @@ def create_product(request):
         form = ProductForm(request.POST)
         # {'name':"rice", 'price':150}
         if form.is_valid():
+            name = form.cleaned_data['name']
+            selling_price = form.cleaned_data['selling_price']
+            cost_price = form.cleaned_data['cost_price']
+            
+            existing_product = Product.objects.filter(name=name)
+            if existing_product:
+                context = {'form':form,'my_error_message': name + " already exists!"}
+                return render(request,'product/add_product.html',context)
+
+            if selling_price<cost_price:
+                context = {'form':form,'my_error_message':"Selling Price cannot be less than Cost Price!"}
+                return render(request,'product/add_product.html',context)
+
             form.save()
             messages.success(request, f'Product added!')
             return redirect('product-home')

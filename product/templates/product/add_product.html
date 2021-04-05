@@ -9,6 +9,11 @@
 
     <fieldset class="form-group">
         <legend class="border-bottom mb-4">Add new product</legend>
+            {% if my_error_message %}
+                <div class="alert alert-danger">
+                    <strong>{{ my_error_message|escape }}</strong>
+                </div>
+            {% endif %}
         {{form|crispy}}
     </fieldset>
 
