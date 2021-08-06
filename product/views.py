@@ -15,9 +15,6 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-
-
-
 @user_passes_test(lambda u: u.is_superuser)
 def home(request):
     return render(request,'product/home.html')
@@ -51,10 +48,8 @@ def create_product(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def edit_product(request):
-
     context = {'product_list': Product.objects.all()}
     return render(request,'product/edit_product.html',context)
-
 
 @user_passes_test(lambda u: u.is_superuser)
 def edit_util(request,p_id):
@@ -92,13 +87,9 @@ def view_product(request):
 
 @login_required
 def new_transaction(request):
-
     if request.method == 'POST':
-    
         form = TransactionForm(request.POST)
-
         if form.is_valid():
-            
             p_name = form.cleaned_data['Product_name']
             p_id = form.cleaned_data['product_id']
 
@@ -146,7 +137,6 @@ def new_transaction(request):
                     context = {'form':form,'product_dict':request.session['my_dict'],'product_list':product_list,'my_error_message':f'Name: {p_name} and ID: {p_id} are mismatched!'}
                     return render(request,'product/transaction.html',context)
                   
-
             # product_exist check...
             if not product_exist(p_name):
                 product_list = []
@@ -162,7 +152,6 @@ def new_transaction(request):
             if 'my_dict' not in request.session:
                 request.session['my_dict'] = {}
 
-            
             # check if current product is not in 'my_dict'
             if p_name not in request.session['my_dict'].keys():
 
@@ -179,11 +168,8 @@ def new_transaction(request):
                 else:
                     request.session['my_dict'][p_name] = 0 
                 
-                
-                
             # checks if entered quantity exceeds the stock limit...
             if quantity_check(p.id, form.cleaned_data['quantity'] + request.session['my_dict'][p_name]):            
-
                 if 'my_dict' not in request.session:
                     request.session['my_dict'] = {}
 
@@ -192,11 +178,9 @@ def new_transaction(request):
                     
                 else:
                     request.session['my_dict'][p_name] = form.cleaned_data['quantity']
-
                 return redirect('product-transaction')
                 
             else:
-
                 if 'my_dict' not in request.session:
                     request.session['my_dict'] = {}
                 
@@ -225,7 +209,6 @@ def new_transaction(request):
 # Before rendering out the pdf, make sure to decrease the size of the inventory...
 
 def generate_pdf(request):
-
     transaction_dict = request.session['my_dict']
     sp = {}
     cp = {}

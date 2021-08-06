@@ -17,4 +17,3 @@ urlpatterns = [
     path('chart/', views.chart_home, name='product-chart-home'),
     path('chart/api/', views.create_chart),
 ]
-
