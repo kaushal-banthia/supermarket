@@ -31,13 +31,6 @@ class PurchaseCreationViewTest(TestCase):
         response = self.client.post(reverse_lazy('product-transaction'))
         self.assertEqual(response.status_code, 200)
 
-    # def test_purchase_count(self):
-        
-    #     self.client.login(username=self.username, password=self.password)
-    #     self.client.post(reverse_lazy('product-transaction'))
-    #     count = Transaction.objects.count()
-    #     self.assertEqual(count, 1)
-
     def test_purchase_creation_with_no_login(self):
         
         response = self.client.post(reverse_lazy('product-transaction'), data=self.data)

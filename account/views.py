@@ -46,4 +46,3 @@ def del_user(request,u_id):
     user.is_active = False
     user.save()
     return redirect('account-user-edit')
-

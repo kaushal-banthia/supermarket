@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
-
 urlpatterns = [
     path('',views.home, name = 'account-home'),
     path('register/',views.register, name='account-register'),
@@ -12,5 +11,3 @@ urlpatterns = [
     path('user/', views.edit_user, name="account-user-edit"),
     path('<int:u_id>/', views.del_user, name="account-user-del"),
 ]
-
-
