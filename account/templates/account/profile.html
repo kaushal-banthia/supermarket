@@ -10,7 +10,7 @@
     {% if user.is_superuser %}
     <img src="{% static 'account/boss.png' %}" width=350 align=right>
     {% else %}
-    <img src="{% static 'account/clerk.png' %}" width=450 align=right>
+    <img src="{% static 'account/clerk.png' %}" width=500 style="float: right;">
     {% endif %}
     <br><br>
     <h1>Username: {{user.username}}</h1>

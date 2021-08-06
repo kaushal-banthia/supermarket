@@ -292,7 +292,7 @@ def report(request):
                 context = {
                     'num':num,
                     'user_list': user_list,
-                    'my_error_message': 'Start Date cannot occur before the End Date'}
+                    'my_error_message': 'Start Date cannot occur after the End Date'}
                 return render(request,'product/report.html',context)
 
         elif date_correct(start, end) == 2:

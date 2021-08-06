@@ -2,7 +2,9 @@
 
 {% block content %}
 
+<br>
 <div class="row text-muted border-bottom mb-2">
+    <div class="col-1 px-0">ID</div>
     <div class="col-2 pl-5">Name</div>
     <div class="col-1 px-0">Quantity</div>
     <div class="col-1 px-0">Cost Price</div>
@@ -14,6 +16,7 @@
 {% for product in product_list %}
     <div class="parent">
         <div class="row highlight bg-light mb-2 py-2">
+            <div class="col-1 px-0">{{ product.pk }}</div>
             <div class="col-2 pl-5">{{ product.name }}</div>
             <div class="col-1 px-0">{{ product.quantity }}</div>
             <div class="col-1 px-0">{{ product.cost_price }}</div>
@@ -21,5 +24,4 @@
     </div>
 
 {% endfor %}
-
 {% endblock %}
